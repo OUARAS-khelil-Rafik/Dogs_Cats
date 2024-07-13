@@ -3,9 +3,9 @@ from tensorflow.keras.models import load_model
 from data_preprocessing import create_generators, unzip_data
 
 # Chemins
-base_dir = 'data'
-test_zip_path = os.path.join(base_dir, 'test.zip')
-test_dir = os.path.join(base_dir, 'test1')
+base_dir = '../Datasets'
+#test_zip_path = os.path.join(base_dir, 'test.zip')
+test_dir = os.path.join(base_dir, 'test')
 model_path = 'saved_models/model.h5'
 
 # Décompresser les fichiers zip

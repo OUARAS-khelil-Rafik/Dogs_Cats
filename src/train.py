@@ -3,11 +3,11 @@ from data_preprocessing import unzip_data, create_generators
 from model import create_model
 
 # Chemins
-base_dir = 'data'
-train_zip_path = os.path.join(base_dir, 'train.zip')
-test_zip_path = os.path.join(base_dir, 'test.zip')
+base_dir = '../Datasets'
+train_zip_path = os.path.join(base_dir, 'train')
+test_zip_path = os.path.join(base_dir, 'test.rar')
 train_dir = os.path.join(base_dir, 'train')
-test_dir = os.path.join(base_dir, 'test1')
+test_dir = os.path.join(base_dir, 'test')
 
 # Décompresser les fichiers zip
 unzip_data(train_zip_path, base_dir)
@@ -28,4 +28,4 @@ history = model.fit(
     epochs=50)
 
 # Sauvegarder le modèle
-model.save('saved_models/model.h5')
+model.save('../saved_models/model.h5')
