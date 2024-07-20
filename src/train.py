@@ -4,23 +4,23 @@ import tensorflow as tf
 from data_preprocessing import create_generators
 from model import create_model
 
-# Chemins des dossiers de données
+# Data directory paths
 train_dir = 'Datasets/train'
 
-# Création des générateurs de données
+# Create data generators
 train_generator, validation_generator = create_generators(train_dir)
 
-# Définir la taille des lots pour l'entraînement
+# Define the batch size for training
 batch_size = 64
 
-# Utiliser MirroredStrategy pour le parallélisme multi-CPU
+# Use MirroredStrategy for multi-CPU parallelism
 strategy = tf.distribute.MirroredStrategy()
 
 with strategy.scope():
-    # Créer et compiler le modèle
+    # Create and compile the model
     model = create_model()
 
-    # Entraîner le modèle
+    # Train the model
     history = model.fit(
         train_generator,
         steps_per_epoch=train_generator.samples // batch_size,

@@ -1,6 +1,6 @@
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 
-def create_generators(train_dir, img_size=(150, 150), batch_size=32):
+def create_generators(train_dir, img_size=(150, 150), batch_size=64):
     train_datagen = ImageDataGenerator(
         rescale=1./255,
         shear_range=0.2,
@@ -24,17 +24,17 @@ def create_generators(train_dir, img_size=(150, 150), batch_size=32):
 
     return train_generator, validation_generator
 
-# Chemins des dossiers de données
+# Data directory paths
 train_dir = 'Datasets/train'
 
-# Création des générateurs de données
+# Create data generators
 train_generator, validation_generator = create_generators(train_dir)
 
-# Affichage de quelques informations sur les générateurs
-print(f"Nombre d'images dans le jeu d'entraînement : {train_generator.samples}")
-print(f"Nombre d'images dans le jeu de validation : {validation_generator.samples}")
+# Display some information about the generators
+print(f"Number of images in the training set: {train_generator.samples}")
+print(f"Number of images in the validation set: {validation_generator.samples}")
 
-# Exemple d'utilisation des générateurs pour récupérer un lot d'images
+# Example of using the generators to retrieve a batch of images
 batch_images, batch_labels = next(train_generator)
-print(f"Shape du batch d'images : {batch_images.shape}")
-print(f"Shape du batch de labels : {batch_labels.shape}")
+print(f"Shape of the batch of images: {batch_images.shape}")
+print(f"Shape of the batch of labels: {batch_labels.shape}")

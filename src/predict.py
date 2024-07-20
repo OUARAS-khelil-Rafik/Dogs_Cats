@@ -1,6 +1,7 @@
 from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing import image
 import numpy as np
+import pandas as pd
 import matplotlib.pyplot as plt
 import tensorflow as tf
 from pathlib import Path
@@ -36,7 +37,7 @@ def load_and_preprocess_image(path):
 
 test_ds = tf.data.Dataset.from_tensor_slices([str(p) for p in test])
 test_ds = test_ds.map(load_and_preprocess_image, num_parallel_calls=tf.data.experimental.AUTOTUNE)
-test_ds = test_ds.batch(32)
+test_ds = test_ds.batch(64)
 test_ds = test_ds.prefetch(buffer_size=tf.data.experimental.AUTOTUNE)
 
 # Make predictions in parallel
@@ -49,23 +50,21 @@ for batch, paths in test_ds:
     file_paths.extend(paths.numpy())
 
 # Display some images with their predictions
-import pandas as pd
-
 # Create a DataFrame to store file paths and predictions
 results_df = pd.DataFrame({'FilePath': file_paths, 'Prediction': predictions})
 
 # Function to display images with predictions
-def display_images_with_predictions(df, num_images=50):
-    plt.figure(figsize=(20, 40))  # Adjust figure size as needed
+def display_images_with_predictions(df, num_images=10):
+    plt.figure(figsize=(70, 100))  # Adjust figure size as needed
     for i in range(num_images):
         img_path = df.iloc[i]['FilePath']
         prediction = df.iloc[i]['Prediction']
-        img = image.load_img(img_path, target_size=(150, 150))
-        plt.subplot(10, 5, i + 1)  # Adjust layout to 10 rows and 5 columns
+        img = image.load_img(img_path, target_size=(200, 200))
+        plt.subplot(2, 5, i + 1)  # Adjust layout to 2 rows and 5 columns
         plt.imshow(img)
         plt.title(prediction)
         plt.axis('off')
     plt.show()
 
 # Display the first 50 images with predictions
-display_images_with_predictions(results_df, num_images=50)
+display_images_with_predictions(results_df, num_images=10)
