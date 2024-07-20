@@ -10,7 +10,7 @@ from pathlib import Path
 model = load_model('saved_models/model.h5')
 
 # Function to preprocess the image
-def preprocess_image(img_path, img_size=(150, 150)):
+def preprocess_image(img_path, img_size=(200, 200)):
     img = image.load_img(img_path, target_size=img_size)
     img_array = image.img_to_array(img)
     img_array = np.expand_dims(img_array, axis=0)
@@ -31,7 +31,7 @@ test = list(test_dir.glob('*.jpg'))
 def load_and_preprocess_image(path):
     img = tf.io.read_file(path)
     img = tf.image.decode_jpeg(img, channels=3)
-    img = tf.image.resize(img, [150, 150])
+    img = tf.image.resize(img, [200, 200])
     img = img / 255.0
     return img, path
 
@@ -55,7 +55,7 @@ results_df = pd.DataFrame({'FilePath': file_paths, 'Prediction': predictions})
 
 # Function to display images with predictions
 def display_images_with_predictions(df, num_images=10):
-    plt.figure(figsize=(70, 100))  # Adjust figure size as needed
+    plt.figure(figsize=(20, 10))  # Adjust figure size as needed
     for i in range(num_images):
         img_path = df.iloc[i]['FilePath']
         prediction = df.iloc[i]['Prediction']
@@ -64,7 +64,8 @@ def display_images_with_predictions(df, num_images=10):
         plt.imshow(img)
         plt.title(prediction)
         plt.axis('off')
+    plt.savefig('results/prediction_results.png')
     plt.show()
 
-# Display the first 50 images with predictions
+# Display the first 10 images with predictions
 display_images_with_predictions(results_df, num_images=10)
