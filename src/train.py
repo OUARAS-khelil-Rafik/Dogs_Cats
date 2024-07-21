@@ -13,7 +13,7 @@ train_dir = 'Datasets/train'
 train_generator, validation_generator = create_generators(train_dir)
 
 # Define the batch size for training
-batch_size = 64
+batch_size = 100
 
 # Use MirroredStrategy for multi-CPU parallelism
 strategy = tf.distribute.MirroredStrategy()
@@ -24,14 +24,14 @@ with strategy.scope():
 
     # Callbacks for training
     tensorboard = TensorBoard(log_dir='logs')
-    checkpoint = ModelCheckpoint('best_model.h5', monitor='val_accuracy', save_best_only=True)
+    checkpoint = ModelCheckpoint('model.keras', monitor='val_accuracy', save_best_only=True)
     early_stopping = EarlyStopping(monitor='val_loss', patience=10)
 
     # Train the model
     history = model.fit(
         train_generator,
         steps_per_epoch=train_generator.samples // batch_size,
-        epochs=50,
+        epochs=10,
         validation_data=validation_generator,
         validation_steps=validation_generator.samples // batch_size,
         callbacks=[tensorboard, checkpoint, early_stopping]
@@ -48,8 +48,9 @@ if os.path.exists(save_dir):
 os.makedirs(save_dir)
 
 # Save the model
-model.save(os.path.join(save_dir, 'model.h5'))
+model.save(os.path.join(save_dir, 'model.keras'))
 
+save_dir2 = 'results'
 # Plot training & validation accuracy values
 plt.figure(figsize=(12, 4))
 plt.subplot(1, 2, 1)
@@ -70,7 +71,7 @@ plt.xlabel('Epoch')
 plt.legend(['Train', 'Validation'], loc='upper left')
 
 # Save and show the plots
-plt.savefig(os.path.join(save_dir, 'training_history.png'))
+plt.savefig(os.path.join(save_dir2, 'training_history.png'))
 plt.show()
 
 # Evaluate the model on the validation set

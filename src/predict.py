@@ -5,9 +5,10 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import tensorflow as tf
 from pathlib import Path
+import os
 
 # Load the saved model
-model = load_model('saved_models/model.h5')
+model = load_model('saved_models/model.keras')
 
 # Compile the model with metrics
 model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
@@ -40,7 +41,7 @@ def load_and_preprocess_image(path):
 
 test_ds = tf.data.Dataset.from_tensor_slices([str(p) for p in test])
 test_ds = test_ds.map(load_and_preprocess_image, num_parallel_calls=tf.data.experimental.AUTOTUNE)
-test_ds = test_ds.batch(64)
+test_ds = test_ds.batch(32)
 test_ds = test_ds.prefetch(buffer_size=tf.data.experimental.AUTOTUNE)
 
 # Make predictions in parallel
@@ -62,7 +63,7 @@ def display_images_with_predictions(df, num_images=10):
     results_dir = Path('results')
     results_dir.mkdir(exist_ok=True)
 
-    plt.figure(figsize=(30, 10))  # Adjust figure size for horizontal layout
+    plt.figure(figsize=(40, 20))  # Adjust figure size for horizontal layout
     for i in range(num_images):
         img_path = df.iloc[i]['FilePath']
         prediction = df.iloc[i]['Prediction']
