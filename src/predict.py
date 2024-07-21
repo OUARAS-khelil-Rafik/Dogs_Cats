@@ -9,8 +9,11 @@ from pathlib import Path
 # Load the saved model
 model = load_model('saved_models/model.h5')
 
+# Compile the model with metrics
+model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
+
 # Function to preprocess the image
-def preprocess_image(img_path, img_size=(200, 200)):
+def preprocess_image(img_path, img_size=(150, 150)):
     img = image.load_img(img_path, target_size=img_size)
     img_array = image.img_to_array(img)
     img_array = np.expand_dims(img_array, axis=0)
@@ -31,7 +34,7 @@ test = list(test_dir.glob('*.jpg'))
 def load_and_preprocess_image(path):
     img = tf.io.read_file(path)
     img = tf.image.decode_jpeg(img, channels=3)
-    img = tf.image.resize(img, [200, 200])
+    img = tf.image.resize(img, [150, 150])
     img = img / 255.0
     return img, path
 
@@ -55,16 +58,22 @@ results_df = pd.DataFrame({'FilePath': file_paths, 'Prediction': predictions})
 
 # Function to display images with predictions
 def display_images_with_predictions(df, num_images=10):
-    plt.figure(figsize=(20, 10))  # Adjust figure size as needed
+    # Ensure the results directory exists
+    results_dir = Path('results')
+    results_dir.mkdir(exist_ok=True)
+
+    plt.figure(figsize=(30, 10))  # Adjust figure size for horizontal layout
     for i in range(num_images):
         img_path = df.iloc[i]['FilePath']
         prediction = df.iloc[i]['Prediction']
         img = image.load_img(img_path, target_size=(200, 200))
-        plt.subplot(2, 5, i + 1)  # Adjust layout to 2 rows and 5 columns
+        plt.subplot(2, 5, i + 1)  # Adjust layout to 2 rows and 5 columns for horizontal orientation
         plt.imshow(img)
-        plt.title(prediction)
+        plt.title(prediction, fontsize=24, color='red')  # Adjust font size and color
         plt.axis('off')
-    plt.savefig('results/prediction_results.png')
+    
+    # Save the figure with predictions
+    plt.savefig(results_dir / 'prediction_results.png')
     plt.show()
 
 # Display the first 10 images with predictions
