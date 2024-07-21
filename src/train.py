@@ -13,7 +13,7 @@ train_dir = 'Datasets/train'
 train_generator, validation_generator = create_generators(train_dir)
 
 # Define the batch size for training
-batch_size = 100
+batch_size = 32
 
 # Use MirroredStrategy for multi-CPU parallelism
 strategy = tf.distribute.MirroredStrategy()
@@ -31,7 +31,7 @@ with strategy.scope():
     history = model.fit(
         train_generator,
         steps_per_epoch=train_generator.samples // batch_size,
-        epochs=10,
+        epochs=50,
         validation_data=validation_generator,
         validation_steps=validation_generator.samples // batch_size,
         callbacks=[tensorboard, checkpoint, early_stopping]
