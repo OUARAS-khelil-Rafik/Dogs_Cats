@@ -26,11 +26,11 @@ The CNN model is built using Keras with the following layers:
 
 ### Training and Validation Accuracy
 
-![Accuracy Graph](saved_models/training_history.png)
+![Accuracy Graph](results/training_history.png)
 
 ### Training and Validation Loss
 
-![Loss Graph](saved_models/training_history.png)
+![Loss Graph](results/training_history.png)
 
 ### Prediction Results
 
