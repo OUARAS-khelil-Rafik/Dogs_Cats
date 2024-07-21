@@ -1,4 +1,5 @@
-tensorflow
-matplotlib
-numpy
-Pillow
+TensorFlow
+Keras
+Matplotlib
+Pandas
+Numpy
